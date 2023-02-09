@@ -302,8 +302,6 @@ namespace Haiku.Rando.Topology
             //Create nodes for checks in the room
             var checks = FindChecks(sceneId);
 
-            //Hard-coded duplicate check removal for straggler entries (likely disabled entries from experimental moving things around?)
-
 
             //TODO: Perform reachability analysis
             //TODO: Create AStarPath, configure it and generate paths between nodes
@@ -444,9 +442,12 @@ namespace Haiku.Rando.Topology
                     itemId = pickup.itemID;
                     alias = itemCount == 1 ? "Item" : null;
                 }
-                var check = new RandoCheck(type, sceneId, pickup.transform.position, itemId) { SaveId = pickup.saveID };
-                check.Alias = alias ?? check.Name;
-                checks.Add(check);
+                if (!_ignoredPickups.Contains((sceneId, type)))
+                {
+                    var check = new RandoCheck(type, sceneId, pickup.transform.position, itemId) { SaveId = pickup.saveID };
+                    check.Alias = alias ?? check.Name;
+                    checks.Add(check);
+                }
             }
 
             foreach (var pickup in SceneUtils.FindObjectsOfType<Disruptor>().Where(p => !IsCorruptModeOnly(p.gameObject)))
@@ -471,7 +472,10 @@ namespace Haiku.Rando.Topology
                 checks.Add(check);
             }
 
-            var powerCells = SceneUtils.FindObjectsOfType<PowerCell>();
+            var powerCells = 
+                _ignoredPickups.Contains((sceneId, CheckType.PowerCell)) ?
+                    System.Array.Empty<PowerCell>() :
+                    SceneUtils.FindObjectsOfType<PowerCell>();
             for (var i = 0; i < powerCells.Length; i++)
             {
                 var pickup = powerCells[i];
@@ -560,6 +564,16 @@ namespace Haiku.Rando.Topology
             _allNodes.AddRange(checks);
             return checks;
         }
+
+        // List of unused pickups added by the corrupt mode update
+        // (possibly the result of experimentally moving items around during
+        // development)
+        private static readonly HashSet<(int sceneId, CheckType type)> _ignoredPickups = new()
+        {
+            (102, CheckType.Chip),
+            (104, CheckType.Item),
+            (132, CheckType.PowerCell)
+        };
 
         private bool IsCorruptModeOnly(GameObject gameObj)
         {
