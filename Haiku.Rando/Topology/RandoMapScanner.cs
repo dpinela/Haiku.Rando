@@ -553,7 +553,27 @@ namespace Haiku.Rando.Topology
                     }
 
                     var pos = collider.transform.position;
-                    var check = new RandoCheck(CheckType.Lever, sceneId, new Vector2(pos.x, pos.y) + collider.offset, door.pistonDoorScript.doorID);
+                    var check = new RandoCheck(CheckType.MundoLever, sceneId, new Vector2(pos.x, pos.y) + collider.offset, door.pistonDoorScript.doorID);
+                    check.Alias = "Lever";
+                    checks.Add(check);
+                }
+            }
+
+            foreach (var door in SceneUtils.FindObjectsOfType<FactoryElevatorDoors>())
+            {
+                if (!IsCorruptModeOnly(door.gameObject))
+                {
+                    var collider = door.GetComponent<Collider2D>();
+                    var doorID = door.door03 
+                        ? door.factoryElevatorScript.door03SaveID
+                        : door.factoryElevatorScript.door02SaveID;
+                    if (!collider)
+                    {
+                        Debug.LogWarning($"Unable to locate switch collider for Door {doorID}; ignoring");
+                        continue;
+                    }
+                    var pos = collider.transform.position;
+                    var check = new RandoCheck(CheckType.Lever, sceneId, new Vector2(pos.x, pos.y) + collider.offset, doorID);
                     check.Alias = "Lever";
                     checks.Add(check);
                 }

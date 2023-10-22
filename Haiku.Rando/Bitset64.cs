@@ -25,6 +25,8 @@ namespace Haiku.Rando
             _bits |= Mask(i);
         }
 
+        public bool Empty => _bits == 0;
+
         public ulong Bits => _bits;
     }
 }

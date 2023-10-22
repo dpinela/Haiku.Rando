@@ -15,6 +15,8 @@ namespace Haiku.Rando
         public static string _CLOCK_DESCRIPTION => "_CLOCK_DESCRIPTION";
         public static string _LEVER_TITLE(int n) => "_LEVER_TITLE_" + n;
         public static string _LEVER_DESCRIPTION(int n) => "_LEVER_DESCRIPTION_" + n;
+        public static string _MUNDO_LEVER_TITLE = "_MUNDO_LEVER_TITLE";
+        public static string _MUNDO_LEVER_DESCRIPTION = "_MUNDO_LEVER_DESCRIPTION";
         public static string _MW_ITEM_TITLE(int n) => "_MW_ITEM_TITLE_" + n;
         public static string _MW_ITEM_DESCRIPTION => "_MW_ITEM_DESCRIPTION";
         public static string _MW_EJECT => "_MW_EJECT";
@@ -57,6 +59,8 @@ namespace Haiku.Rando
             en[_LEVER_DESCRIPTION(21)] = "Together with its two siblings, opens the way to the Hive.";
             en[_LEVER_TITLE(22)] = "Bulb Hive Right Lever";
             en[_LEVER_DESCRIPTION(22)] = "Opens the way to the Hive.";
+            en[_MUNDO_LEVER_TITLE] = "Factory Elevator Lever";
+            en[_MUNDO_LEVER_DESCRIPTION] = "Opens one floor of the Factory elevator.";
             en[_LEVER_TITLE(25)] = "Factory Station Lever";
             en[_LEVER_DESCRIPTION(25)] = "Opens the right side entrance to the Factory Facility train station.";
             en[_LEVER_TITLE(26)] = "Factory Saw Tunnel Lever";

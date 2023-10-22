@@ -53,6 +53,7 @@ namespace Haiku.Rando.Logic
         Lever20,
         Lever21,
         Lever22,
+        LeverMundo,
         Lever25,
         Lever26,
         Lever27,

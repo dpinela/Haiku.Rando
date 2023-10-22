@@ -1625,19 +1625,22 @@ Bottom->*: Magnet | DoubleJump
 
 // Scene 174 : Mundo (Factory Big Elevator)
 // Transitions: Left2 (180-174), Left3 (173-174), Left1 (182-174), Left0 (187-174), Right2 (174-175), Right1 (174-183), Right0 (174-186)
-// Checks:
+// Checks: Lever1 (Lever[23]), Lever0 (Lever[24])
 Scene 174
 $F0 {Left3}
 $F1 {Left2, Right2}
 $F2 {Left1, Right1}
 $F3 {Left0, Right0}
-//Mundo levers aren't in pool, so we just presume downward movement okay for logic, upward no
-//The exception is F0->F1, as there's no gate there
-F0->F2: false
-F0->F3: false
-F1->F2: false
-F1->F3: false
-F2->F3: false
+F0->F2: LeverMundo
+F0->F3: 2#LeverMundo
+F1->F2: LeverMundo
+F1->F3: 2#LeverMundo
+F2->F0: LeverMundo
+F2->F1: LeverMundo
+F2->F3: 2#LeverMundo
+F3->F0: 2#LeverMundo
+F3->F1: 2#LeverMundo
+F3->F2: 2#LeverMundo
 
 // Scene 175
 // Transitions: Right (175-176), Left (174-175)

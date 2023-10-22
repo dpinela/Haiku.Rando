@@ -90,6 +90,7 @@ namespace Haiku.Rando.Checks
             CheckType.MoneyPile => r => UniversalPickup.ReplaceMoneyPile(orig, r),
             CheckType.Clock => ClockRepairReplacer.ReplaceCheck,
             CheckType.Lever => r => LeverReplacer.ReplaceCheck(orig, r),
+            CheckType.MundoLever => r => MundoLeverReplacer.ReplaceCheck(orig, r),
             _ => throw new ArgumentOutOfRangeException($"invalid check type {orig.Type}")
         };
 
@@ -139,13 +140,13 @@ namespace Haiku.Rando.Checks
                 GameManager.instance.worldObjects[check.SaveId].collected,
             CheckType.MapDisruptor => GameManager.instance.disruptors[check.CheckId].destroyed,
             CheckType.Lever => GameManager.instance.doors[check.CheckId].opened,
+            CheckType.MundoLever => GetCurrentSaveData().CollectedElevatorLevers.Contains(check.CheckId),
             CheckType.PowerCell => GameManager.instance.powerCells[check.CheckId].collected,
             CheckType.FireRes => GameManager.instance.fireRes,
             CheckType.WaterRes => GameManager.instance.waterRes,
             CheckType.TrainStation => GameManager.instance.trainStations[check.CheckId].unlockedStation,
             CheckType.Clock => GameManager.instance.trainUnlocked,
             CheckType.Lore => GetCurrentSaveData().CollectedLore.Contains(check.CheckId),
-            CheckType.PartsMonument => false,
             CheckType.MapMarker => HasMapMarker((RustyType)check.CheckId),
             CheckType.MoneyPile => GameManager.instance.moneyPiles[check.CheckId].collected,
             _ => throw new ArgumentOutOfRangeException()
@@ -266,9 +267,6 @@ namespace Haiku.Rando.Checks
                     GetCurrentSaveData().CollectedLore.Add(check.CheckId);
                     hasWorldObject = false;
                     break;
-                case CheckType.PartsMonument:
-                    //TODO
-                    break;
                 case CheckType.PowerCell:
                     self.StartCoroutine(RemoveHeat());
                     GameManager.instance.powerCells[check.CheckId].collected = true;
@@ -314,6 +312,22 @@ namespace Haiku.Rando.Checks
                     GameManager.instance.doors[check.CheckId].opened = true;
                     OpenVanillaDoor(check.CheckId);
                     hasWorldObject = false;
+                    break;
+                case CheckType.MundoLever:
+                    {
+                        var save = GetCurrentSaveData();
+                        if (save.CollectedElevatorLevers.Empty)
+                        {
+                            GameManager.instance.doors[23].opened = true;
+                        }
+                        else
+                        {
+                            GameManager.instance.doors[24].opened = true;
+                        }
+                        save.CollectedElevatorLevers.Add(check.CheckId);
+                        hasWorldObject = false;
+                    }
+                    
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

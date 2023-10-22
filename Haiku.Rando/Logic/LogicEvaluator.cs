@@ -178,6 +178,8 @@ namespace Haiku.Rando.Logic
             20 => LogicSymbol.Lever20,
             21 => LogicSymbol.Lever21,
             22 => LogicSymbol.Lever22,
+            23 => LogicSymbol.LeverMundo,
+            24 => LogicSymbol.LeverMundo,
             25 => LogicSymbol.Lever25,
             26 => LogicSymbol.Lever26,
             27 => LogicSymbol.Lever27,
